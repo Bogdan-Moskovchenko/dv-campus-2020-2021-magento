@@ -1,5 +1,5 @@
 # SSL certificates for development
-# $ mkcert bogdan-moskovchenko.local www.bogdan-moskovchenko.local
+# $ mkcert bogdan-moskovchenko.local www.bogdan-moskovchenko.local bogdan-moskovchenko-additional.local www.bogdan-moskovchenko-additional.local
 #
 # Start composition:
 # $ docker-compose up -d
@@ -27,33 +27,33 @@ services:
     labels:
       - traefik.enable=true
       # HTTP
-      - traefik.http.routers.bogdan-moskovchenko-local-http.rule=Host(`bogdan-moskovchenko.local`,`www.bogdan-moskovchenko.local`)
+      - traefik.http.routers.bogdan-moskovchenko-local-http.rule=Host(`bogdan-moskovchenko.local`,`www.bogdan-moskovchenko.local`, `bogdan-moskovchenko-additional.local`, `www.bogdan-moskovchenko-additional.local`)
       - traefik.http.routers.bogdan-moskovchenko-local-http.entrypoints=http
       - traefik.http.routers.bogdan-moskovchenko-local-http.service=bogdan-moskovchenko-local-http
       - traefik.http.services.bogdan-moskovchenko-local-http.loadbalancer.server.port=80
       - traefik.http.services.bogdan-moskovchenko-local-http.loadbalancer.server.scheme=http
       # HTTPS
-      - traefik.http.routers.bogdan-moskovchenko-local-https.rule=Host(`bogdan-moskovchenko.local`,`www.bogdan-moskovchenko.local`)
+      - traefik.http.routers.bogdan-moskovchenko-local-https.rule=Host(`bogdan-moskovchenko.local`,`www.bogdan-moskovchenko.local`, `bogdan-moskovchenko-additional.local`, `www.bogdan-moskovchenko-additional.local`)
       - traefik.http.routers.bogdan-moskovchenko-local-https.entrypoints=https
       - traefik.http.routers.bogdan-moskovchenko-local-https.tls=true
       - traefik.http.routers.bogdan-moskovchenko-local-https.service=bogdan-moskovchenko-local-https
       - traefik.http.services.bogdan-moskovchenko-local-https.loadbalancer.server.port=443
       - traefik.http.services.bogdan-moskovchenko-local-https.loadbalancer.server.scheme=https
       # Develop with extension that allows setting livereload host and port - https://github.com/lokcito/livereload-extensions
-      - traefik.http.routers.bogdan-moskovchenko-local-livereload-https.rule=Host(`bogdan-moskovchenko.local`,`www.bogdan-moskovchenko.local`)
+      - traefik.http.routers.bogdan-moskovchenko-local-livereload-https.rule=Host(`bogdan-moskovchenko.local`,`www.bogdan-moskovchenko.local`, `bogdan-moskovchenko-additional.local`, `www.bogdan-moskovchenko-additional.local`)
       - traefik.http.routers.bogdan-moskovchenko-local-livereload-https.entrypoints=livereload-https
       - traefik.http.routers.bogdan-moskovchenko-local-livereload-https.tls=true
       - traefik.http.routers.bogdan-moskovchenko-local-livereload-https.service=bogdan-moskovchenko-local-livereload-https
       - traefik.http.services.bogdan-moskovchenko-local-livereload-https.loadbalancer.server.port=35729
       - traefik.http.services.bogdan-moskovchenko-local-livereload-https.loadbalancer.server.scheme=http
-      - traefik.http.routers.bogdan-moskovchenko-local-livereload-http.rule=Host(`bogdan-moskovchenko.local`,`www.bogdan-moskovchenko.local`)
+      - traefik.http.routers.bogdan-moskovchenko-local-livereload-http.rule=Host(`bogdan-moskovchenko.local`,`www.bogdan-moskovchenko.local`, `bogdan-moskovchenko-additional.local`, `www.bogdan-moskovchenko-additional.local`)
       - traefik.http.routers.bogdan-moskovchenko-local-livereload-http.entrypoints=livereload-http
       - traefik.http.routers.bogdan-moskovchenko-local-livereload-http.service=bogdan-moskovchenko-local-livereload-http
       - traefik.http.services.bogdan-moskovchenko-local-livereload-http.loadbalancer.server.port=35729
       - traefik.http.services.bogdan-moskovchenko-local-livereload-http.loadbalancer.server.scheme=http
     # Must add extra_hosts to be written to /etc/hosts - otherwise containerized application can not curl itself
     extra_hosts:
-      - "bogdan-moskovchenko.local www.bogdan-moskovchenko.local:127.0.0.1"
+      - "bogdan-moskovchenko.local www.bogdan-moskovchenko.local bogdan-moskovchenko-additional.local www.bogdan-moskovchenko-additional.local:127.0.0.1"
       # Required for xDebug on Linux hosts till docker.host.internal is not available by default - https://github.com/docker/libnetwork/pull/2348/files
       - "host.docker.internal:172.17.0.1"
     links:
